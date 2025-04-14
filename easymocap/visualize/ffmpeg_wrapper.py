@@ -77,4 +77,9 @@ if __name__ == '__main__':
         restart=True, fps_in=args.fps, fps_out=args.fps, remove_images=args.remove, ext=args.ext,
         reorder=args.reorder,
         debug=args.debug)
-    video_maker.make_video(args.path)
+
+    path = args.path.replace("/","\\")
+    path = path.replace("\\\\", "\\")
+    print("NEW PATH")
+    print(path)
+    video_maker.make_video(path)

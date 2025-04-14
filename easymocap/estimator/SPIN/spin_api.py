@@ -267,7 +267,7 @@ def estimate_translation_np(S, joints_2d, joints_conf, K):
 class SPIN:
     def __init__(self, SMPL_MEAN_PARAMS, checkpoint, device) -> None:
         model = hmr(SMPL_MEAN_PARAMS).to(device)
-        checkpoint = torch.load(checkpoint)
+        checkpoint = torch.load(checkpoint, weights_only=False, map_location=torch.device('cpu'))
         model.load_state_dict(checkpoint['model'], strict=False)
         # Load SMPL model
         model.eval()

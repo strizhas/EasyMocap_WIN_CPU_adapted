@@ -571,6 +571,8 @@ class MultiVideo(ImageFolder):
         return ret
     
     def reshape_data(self, infos):
+        print("INFOS")
+        print(infos)
         for key in ['imgname', 'annname']:
             infos[key] = [d[0] for d in infos[key]]
         for key, val in infos.items():

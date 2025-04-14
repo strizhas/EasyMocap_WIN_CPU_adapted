@@ -37,7 +37,7 @@ def init_scene(scene, params, gender='male', angle=0):
     print('success load')
     obname = '%s_avg' % gender[0]
     ob = bpy.data.objects[obname]
-    ob.data.use_auto_smooth = False  # autosmooth creates artifacts
+    #ob.data.use_auto_smooth = False  # autosmooth creates artifacts
 
     # assign the existing spherical harmonics material
     ob.active_material = bpy.data.materials['Material']

@@ -5,11 +5,22 @@ import numpy as np
 import torch
 from .lossbase import LossBase
 
+def convert_file(n_gaussians):
+    from os.path import dirname
+    file_path = join(dirname(__file__), 'gmm_%02d.pkl'%(n_gaussians))
+    temp_path = join(dirname(__file__), 'gmm_%02d_conv.pkl'%(n_gaussians))
+    with open(file_path, 'rb') as infile:
+        content = infile.read()
+    with open(temp_path, 'wb') as output:
+        for line in content.splitlines():
+            output.write(line + str.encode('\n'))
+
 def create_prior_from_cmu(n_gaussians, epsilon=1e-15):
     """Load the gmm from the CMU motion database."""
     from os.path import dirname
     np_dtype = np.float32
-    with open(join(dirname(__file__), 'gmm_%02d.pkl'%(n_gaussians)), 'rb') as f:
+    convert_file(n_gaussians)
+    with open(join(dirname(__file__), 'gmm_%02d_conv.pkl'%(n_gaussians)), 'rb') as f:
         gmm = pickle.load(f, encoding='latin1')
     if True:
         means = gmm['means'].astype(np_dtype)
@@ -116,7 +127,8 @@ class MaxMixtureCompletePrior(object):
         """Load the gmm from the CMU motion database."""
         from os.path import dirname
         np_dtype = np.float32
-        with open(join(dirname(__file__), 'gmm_%02d.pkl'%(self.n_gaussians)), 'rb') as f:
+        convert_file(self.n_gaussians)
+        with open(join(dirname(__file__), 'gmm_%02d_conv.pkl'%(self.n_gaussians)), 'rb') as f:
             gmm = pickle.load(f, encoding='latin1')
         if True:
             means = gmm['means'].astype(np_dtype)

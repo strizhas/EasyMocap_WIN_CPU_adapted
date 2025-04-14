@@ -7,194 +7,80 @@
 -->
 
 <div align="center">
-    <img src="logo.png" width="40%">
-</div>
-
-**EasyMocap** is an open-source toolbox for **markerless human motion capture** and **novel view synthesis** from RGB videos. In this project, we provide a lot of motion capture demos in different settings.
-
-![python](https://img.shields.io/github/languages/top/zju3dv/EasyMocap)
-![star](https://img.shields.io/github/stars/zju3dv/EasyMocap?style=social)
-
-## News
-
-- :tada: Our SIGGRAPH 2022 [**Novel View Synthesis of Human Interactions From Sparse Multi-view Videos**](https://chingswy.github.io/easymocap-public-doc/works/multinb.html) is released! Check the [documentation](https://chingswy.github.io/easymocap-public-doc/works/multinb.html).
-- :tada: EasyMocap v0.2 is released! We support motion capture from Internet videos. Please check the [Quick Start](https://chingswy.github.io/easymocap-public-doc/quickstart/quickstart.html) for more details.
-
-
----
-
-## Core features
-
-### Multiple views of a single person
-
-[![report](https://img.shields.io/badge/quickstart-green)](./doc/quickstart.md) [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1Cyvu_lPFUajr2RKt6yJIfS3HQIIYl6QU?usp=sharing)
-
-This is the basic code for fitting SMPL[^loper2015]/SMPL+H[^romero2017]/SMPL-X[^pavlakos2019]/MANO[^romero2017] model to capture body+hand+face poses from multiple views.
-
-<div align="center">
-    <img src="doc/feng/mv1pmf-smplx.gif" width="80%">
-    <br>
-    <img src="https://raw.githubusercontent.com/chingswy/Dataset-Demo/main/EasyMocap/mv1p-dance-smpl.gif" width="80%">
-    <br>
-    <sup>Videos are from ZJU-MoCap, with 23 calibrated and synchronized cameras.</sup>
-</div>
-
-<div align="center">
-    <img src="doc/feng/mano.gif" width="80%">
-    <br>
-    <sup>Captured with 8 cameras.</sup>
-</div>
-
-### Internet video
-
-This part is the basic code for fitting SMPL[^loper2015] with 2D keypoints estimation[^cao2018][^hrnet] and CNN initialization[^kolotouros2019].
-
-<div align="center">
     <img src="https://raw.githubusercontent.com/chingswy/Dataset-Demo/main/EasyMocap/23EfsN7vEOA%2B003170%2B003670.gif" width="80%">
     <br>
     <sup>The raw video is from <a href="https://www.youtube.com/watch?v=23EfsN7vEOA">Youtube</a>.</sup>
 </div>
 
-### Internet video with a mirror
+## Info
 
-[![report](https://img.shields.io/badge/CVPR21-mirror-red)](https://arxiv.org/pdf/2104.00340.pdf) [![quickstart](https://img.shields.io/badge/quickstart-green)](https://github.com/zju3dv/Mirrored-Human)
+This is forked version of [easyMocap project](https://chingswy.github.io/easymocap-public-doc/install/install.html). I made some small code changes to make it work on Windows 10 without CUDA. 
+I successfully tested it on some monocular videos with openPose and yolov models. This is how I use it:
 
-<div align="center">
-    <img src="https://raw.githubusercontent.com/zju3dv/Mirrored-Human/main/doc/assets/smpl-avatar.gif" width="80%">
-    <br>
-    <sup>The raw video is from <a href="https://www.youtube.com/watch?v=KOCJJ27hhIE">Youtube</a>.</sup>
-</div>
+Monocular example for openPose:
+```
 
+python .\scripts\preprocess\extract_video.py .\folder_with_video\ --mode openpose --openpose .\openpose\
+# folder with video - base folder for your project. This folder with video must contain 'videos' folder with your video
 
-### Multiple Internet videos with a specific action (Coming soon)
+python .\apps\demo\mocap.py .\folder_with_video\ --fps 25 --mono --mode smpl
+# fps argument must correspond with your video fps
 
-[![report](https://img.shields.io/badge/ECCV20-imocap-red)](https://arxiv.org/pdf/2008.07931.pdf) [![quickstart](https://img.shields.io/badge/quickstart-green)](./doc/todo.md)
+path_to_blender\blender.exe -b -t 12 -P .\scripts\postprocess\convert2bvh.py -- .\folder_with_video\\output-output-smpl-3d\smplfull\dancing_man\ --o .\output path\
+# blender must be installed to convert result to bvh format
 
-<div align="center">
-    <img src="doc/imocap/imocap.gif" width="80%"><br/>
-    <sup>Internet videos of Roger Federer's serving</sup>
-</div>
+```
 
-### Multiple views of multiple people
+Monocular example for yolov. The command specifies HRNet, but due to the lack of a CUDA, another model will be used
 
-[![report](https://img.shields.io/badge/CVPR19-mvpose-red)](https://arxiv.org/pdf/1901.04111.pdf) [![quickstart](https://img.shields.io/badge/quickstart-green)](./doc/mvmp.md)
-
-<div align="center">
-    <img src="doc/assets/mvmp1f.gif" width="80%"><br/>
-    <sup>Captured with 8 consumer cameras</sup>
-</div>
-
-### Novel view synthesis from sparse views
-[![report](https://img.shields.io/badge/CVPR21-neuralbody-red)](https://arxiv.org/pdf/2012.15838.pdf) [![quickstart](https://img.shields.io/badge/quickstart-green)](https://github.com/zju3dv/neuralbody)
-
-<div align="center">
-    <img src="https://raw.githubusercontent.com/chingswy/Dataset-Demo/main/EasyMocap/female-ballet.gif" width="80%"><br/>
-    <sup>Novel view synthesis for chanllenge motion(coming soon)</sup>
-</div>
-
-<div align="center">
-    <img src="https://raw.githubusercontent.com/chingswy/Dataset-Demo/main/EasyMocap/nvs_mp_soccer1_6_rgb.gif" width="80%"><br/>
-    <sup>Novel view synthesis for human interaction</sup>
-</div>
-
-    
-## ZJU-MoCap
-
-With our proposed method, we release two large dataset of human motion: LightStage and Mirrored-Human. See the [website](https://chingswy.github.io/Dataset-Demo/) for more details.
-
-If you would like to download the ZJU-Mocap dataset, please sign the [agreement](https://pengsida.net/project_page_assets/files/ZJU-MoCap_Agreement.pdf), and email it to Qing Shuai (s_q@zju.edu.cn) and cc Xiaowei Zhou (xwzhou@zju.edu.cn) to request the download link.
-
-<div align="center">
-<div align="center" width="40%">
-    <img src="doc/assets/ZJU-MoCap-lightstage.jpg" width="40%"><br/>
-    <sup>LightStage: captured with LightStage system</sup>
-</div>
-<div align="center" width="40%">
-    <img src="https://raw.githubusercontent.com/chingswy/Dataset-Demo/main/EasyMocap/mirrored-human.jpg" width="40%"><br/>
-    <sup>Mirrored-Human: collected from the Internet</sup>
-</div>
-</div>
-
-Many works have achieved wonderful results based on our dataset:
-
-- [Real-time volumetric rendering of dynamic humans](https://real-time-humans.github.io/)
-- [CVPR2022: HumanNeRF: Free-viewpoint Rendering of Moving People from Monocular Video](https://grail.cs.washington.edu/projects/humannerf/)
-- [ECCV2022: KeypointNeRF: Generalizing Image-based Volumetric Avatars using Relative Spatial Encoding of Keypoints](https://markomih.github.io/KeypointNeRF/)
-- [SIGGRAPH 2022 paper Drivable Volumetric Avatars using Texel-Aligned Features](https://github.com/facebookresearch/dva)
-
-## Other features
-
-### 3D Realtime visualization
-[![quickstart](https://img.shields.io/badge/quickstart-green)](./doc/realtime_visualization.md)
-<div align="center">
-    <img src="https://raw.githubusercontent.com/chingswy/Dataset-Demo/main/assets/vis3d/skel-body25.gif" width="26%">
-    <img src="https://raw.githubusercontent.com/chingswy/Dataset-Demo/main/assets/vis3d/skel-total.gif" width="26%">
-    <img src="https://raw.githubusercontent.com/chingswy/Dataset-Demo/main/assets/vis3d/skel-multi.gif" width="26%">
-</div>
-
-<div align="center">
-    <img src="https://raw.githubusercontent.com/chingswy/Dataset-Demo/main/assets/vis3d/mesh-smpl.gif" width="26%">
-    <img src="https://raw.githubusercontent.com/chingswy/Dataset-Demo/main/assets/vis3d/mesh-smplx.gif" width="26%">
-    <img src="https://raw.githubusercontent.com/chingswy/Dataset-Demo/main/assets/vis3d/mesh-manol.gif" width="26%">
-</div>
-
-### [Camera calibration](apps/calibration/Readme.md)
-
-<div align="center">
-    <img src="https://raw.githubusercontent.com/chingswy/Dataset-Demo/main/EasyMocap/calib_intri.jpg" width="40%">
-    <img src="https://raw.githubusercontent.com/chingswy/Dataset-Demo/main/EasyMocap/calib_extri.jpg" width="40%">
-    <br>
-    <sup>Calibration for intrinsic and extrinsic parameters</sup>
-</div>
-
-### [Annotator](apps/annotation/Readme.md)
-
-<div align="center">
-    <img src="https://raw.githubusercontent.com/chingswy/Dataset-Demo/main/EasyMocap/annot_keypoints.jpg" width="40%">
-    <img src="https://raw.githubusercontent.com/chingswy/Dataset-Demo/main/EasyMocap/annot_mask.jpg" width="40%">
-    <br>
-    <sup>Annotator for bounding box, keypoints and mask</sup>
-</div>
-
-
-## Updates
-- 11/03/2022: Support MultiNeuralBody.
-- 12/25/2021: Support mediapipe keypoints detector.
-- 08/09/2021: Add a colab demo [here](https://colab.research.google.com/drive/1Cyvu_lPFUajr2RKt6yJIfS3HQIIYl6QU?usp=sharing).
-- 06/28/2021: The **Multi-view Multi-person** part is released!
-- 06/10/2021: The **real-time 3D visualization** part is released!
-- 04/11/2021: The calibration tool and the annotator are released.
-- 04/11/2021: **Mirrored-Human** part is released.
+```
+emc --data config/datasets/svimage.yml --exp config/1v1p/hrnet_pare_finetune.yml --root .\folder_with_video\ --ranges 0 100 1 --subs video_name
+# -ranges - not necessary. you can specify a specific part of the video you want to work with (in frames) 
+# -subs - name of your video file (without extension)
+```
 
 ## Installation
 
-See [documentation](https://chingswy.github.io/easymocap-public-doc/install/install.html) for more instructions.
+First part of installation goes from original [documentation](https://chingswy.github.io/easymocap-public-doc/install/install.html).
+You can skip part with SMPL models, and definitely you can skip CUDA settings (because probably you, like me, don't have a nvidia GPU 😉)  
 
-## Acknowledgements
+Then you must download next archives and extract in repository root folder. So it will look like so:
+```
+3rdparty
+apps
+config
+data
+doc
+easymocap
+library
+models
+myeasymocap
+openpose
+scripts
+```
 
-Here are the great works this project is built upon:
+links to archives: 
 
-- SMPL models and layer are from MPII [SMPL-X model](https://github.com/vchoutas/smplx).
-- Some functions are borrowed from [SPIN](https://github.com/nkolot/SPIN), [VIBE](https://github.com/mkocabas/VIBE), [SMPLify-X](https://github.com/vchoutas/smplify-x)
-- The method for fitting 3D skeleton and SMPL model is similar to [SMPLify-X](https://github.com/vchoutas/smplify-x)(with 3D keypoints loss), [TotalCapture](http://www.cs.cmu.edu/~hanbyulj/totalcapture/)(without using point clouds).
-- We integrate some easy-to-use functions for previous great work:
-  - `easymocap/estimator/mediapipe_wrapper.py`: [MediaPipe](https://github.com/google/mediapipe)
-  - `easymocap/estimator/SPIN`  : an SMPL estimator[^cao2018]
-  - `easymocap/estimator/YOLOv4`: an object detector[^kolotouros2019]
-  - `easymocap/estimator/HRNet` : a 2D human pose estimator[^bochkovskiy2020]
+[openPose 1.7.0](https://disk.yandex.ru/d/f9fOilyCP1cMFQ)
+
+[data](https://disk.yandex.ru/d/L6MYzcZ7vtKfCA)
+
+[models](https://disk.yandex.ru/d/ia1V4mkRiez05Q)
+
+In case of some problems with openPose you can try another versions from [here](https://github.com/CMU-Perceptual-Computing-Lab/openpose/releases)
 
 ## Contact
 
-Please open an issue if you have any questions. We appreciate all contributions to improve our project.
+You can open an issue if you have any questions, but I'm not an author, and not even a programmer, so I'm not sure what I can help you. But anyway you can try 😉
     
 
-## Contributor
+## Original contributors
 
 EasyMocap is **built by** researchers from the 3D vision group of Zhejiang University: [**Qing Shuai**](https://chingswy.github.io/), [**Qi Fang**](https://raypine.github.io/), [**Junting Dong**](https://jtdong.com/), [**Sida Peng**](https://pengsida.net/), **Di Huang**, [**Hujun Bao**](http://www.cad.zju.edu.cn/home/bao/), **and** [**Xiaowei Zhou**](https://xzhou.me/). 
 
 We would like to thank Wenduo Feng, Di Huang, Yuji Chen, Hao Xu, Qing Shuai, Qi Fang, Ting Xie, Junting Dong, Sida Peng and Xiaopeng Ji who are the performers in the sample data. We would also like to thank all the people who has helped EasyMocap [in any way](https://github.com/zju3dv/EasyMocap/graphs/contributors).
 
-## Citation
+## Original citation
 
 This project is a part of our work [iMocap](https://zju3dv.github.io/iMoCap/), [Mirrored-Human](https://zju3dv.github.io/Mirrored-Human/), [mvpose](https://zju3dv.github.io/mvpose/), [Neural Body](https://zju3dv.github.io/neuralbody/), [MultiNeuralBody](https://chingswy.github.io/easymocap-public-doc/works/multinb.html), [enerf]().
 

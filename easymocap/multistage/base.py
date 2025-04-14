@@ -251,6 +251,7 @@ class MultiStage:
         return body_params
 
     def fit_data(self, data, body_model):
+        print("FIT DATA")
         infos = data.copy()
         init_params = body_model.init_params(nFrames=infos['nFrames'], nPerson=infos.get('nPerson', 1))
         # first initialize the model
@@ -287,8 +288,10 @@ class MultiStage:
         return body_params, infos
 
     def fit(self, body_model, dataset):
+        print("FIT")
         batch_size = len(dataset) if self.batch_size == -1 else self.batch_size
         dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=False, num_workers=0, drop_last=False)
+
         if len(dataloader) > 1:
             dataloader = tqdm(dataloader, desc='optimizing')
         for data in dataloader:
