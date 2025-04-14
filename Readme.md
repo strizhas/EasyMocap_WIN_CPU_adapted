@@ -31,6 +31,14 @@ path_to_blender\blender.exe -b -t 12 -P .\scripts\postprocess\convert2bvh.py -- 
 
 ```
 
+Monocular example for openPose with handFace mode. It's not very useful for me, but maybe it's suitable for some applications 
+```
+
+python .\scripts\preprocess\extract_video.py .\folder_with_video\ --mode openpose --openpose .\openpose\ --handface
+
+# next steps are the same as in previous example
+
+```
 Monocular example for yolov. The command specifies HRNet, but due to the lack of a CUDA, another model will be used
 
 ```
@@ -61,7 +69,7 @@ scripts
 
 links to archives: 
 
-[openPose 1.7.0](https://disk.yandex.ru/d/f9fOilyCP1cMFQ)
+[openPose 1.7.0](https://disk.yandex.ru/d/McGm5kZBjrYYcQ)
 
 [data](https://disk.yandex.ru/d/L6MYzcZ7vtKfCA)
 
